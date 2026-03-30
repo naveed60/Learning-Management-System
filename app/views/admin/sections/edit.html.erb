@@ -1,6 +1,4 @@
 <%= turbo_frame_tag 'main' do %>
-<center>
-<h1>Edit Section</h1>
-</center>
-<%= render 'form',section:@section %>
-<%end%>
+  <%= stylesheet_link_tag "course", "data-turbo-track": "reload" %>
+  <%= render "form", section: @section %>
+<% end %>

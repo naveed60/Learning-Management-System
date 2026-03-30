@@ -1,111 +1,78 @@
-<div style="max-width:650px; margin:3rem auto; border-radius:10px; 
-            box-shadow:0 4px 10px rgba(0,0,0,0.1); overflow:hidden;">
+<section class="course-admin course-admin--form">
+  <div class="course-admin__shell course-admin__shell--form">
+    <header class="course-admin__header course-admin__header--form">
+      <div>
+        <p class="course-admin__eyebrow">
+          <%= teacher.persisted? ? "Update Teacher" : "Create Teacher" %>
+        </p>
+        <h1 class="course-admin__title">
+          <%= teacher.persisted? ? "Edit Teacher" : "Add Teacher" %>
+        </h1>
+        <p class="course-admin__subtitle">
+          Keep profile details complete so course assignments and communication stay accurate.
+        </p>
+      </div>
+      <%= link_to "Back to Teachers", admin_teachers_path, class: "course-admin__ghost-link" %>
+    </header>
 
-  <!-- Card Header -->
-  <div style="background-color:#6f42c1; color:white; padding:1rem 1.5rem;">
-    <h3 style="margin:0; font-size:1.5rem; font-weight:bold; display:flex; align-items:center;">
-      <i class="bi bi-person-badge-fill" style="margin-right:0.5rem;"></i> Add Teacher
-    </h3>
-  </div>
+    <div class="course-admin__form-shell">
+      <%= form_for [:admin, teacher], html: { class: "course-admin__form" } do |f| %>
+        <%= render "shared/error", model: teacher %>
 
-  <!-- Card Body -->
-  <div style="background:#f8f9fa; padding:2rem;">
-    <%= form_for [:admin, teacher] do |f| %>
-      <% if teacher.errors.any? %>
-        <div style="background:#f8d7da; color:#842029; padding:1rem; border-radius:0.5rem; margin-bottom:1rem;">
-          <strong><%= pluralize(teacher.errors.count, "error") %> prohibited this teacher from being saved:</strong>
-          <ul style="margin:0.5rem 0 0 1.2rem;">
-            <% teacher.errors.full_messages.each do |msg| %>
-              <li><%= msg %></li>
-            <% end %>
-          </ul>
+        <div class="course-admin__field">
+          <%= f.label :name, "Name", class: "course-admin__label" %>
+          <%= f.text_field :name, placeholder: "Enter full name", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :father_name, "Father Name", class: "course-admin__label" %>
+          <%= f.text_field :father_name, placeholder: "Enter father name", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :email, "Email", class: "course-admin__label" %>
+          <%= f.email_field :email, autocomplete: "email", placeholder: "name@example.com", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :phone_number, "Phone Number", class: "course-admin__label" %>
+          <%= f.telephone_field :phone_number, placeholder: "03XXXXXXXXX", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :password, "Password", class: "course-admin__label" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "course-admin__input" %>
+          <% if @minimum_password_length %>
+            <span class="course-admin__meta"><%= @minimum_password_length %> characters minimum</span>
+          <% end %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :password_confirmation, "Confirm Password", class: "course-admin__label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :dob, "Date of Birth", class: "course-admin__label" %>
+          <%= f.date_field :dob, class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :address, "Address", class: "course-admin__label" %>
+          <%= f.text_field :address, placeholder: "Enter address", class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :course_ids, "Expertise", class: "course-admin__label" %>
+          <%= f.collection_select :course_ids, Course.all, :id, :name, {}, { multiple: true, class: "course-admin__input" } %>
+          <span class="course-admin__meta">Hold Ctrl (Windows) or Command (Mac) to select multiple courses.</span>
+        </div>
+
+        <div class="course-admin__form-actions">
+          <%= link_to "Cancel", admin_teachers_path, class: "course-admin__secondary-button" %>
+          <%= f.submit(teacher.persisted? ? "Save Changes" : "Create Teacher", class: "course-admin__primary-button") %>
         </div>
       <% end %>
-
-      <!-- Name -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :name, "Name", style:"font-weight:600;" %>
-        <%= f.text_field :name, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Father Name -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :father_name, "Father Name", style:"font-weight:600;" %>
-        <%= f.text_field :father_name, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Email -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :email, "Email", style:"font-weight:600;" %>
-        <%= f.email_field :email, autocomplete:"email", class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Phone Number -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :phone_number, "Phone Number", style:"font-weight:600;" %>
-        <%= f.telephone_field :phone_number, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Password -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :password, "Password", style:"font-weight:600;" %>
-        <% if @minimum_password_length %>
-          <small style="color:gray;">(<%= @minimum_password_length %> characters minimum)</small>
-        <% end %>
-        <%= f.password_field :password, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Confirm Password -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :password_confirmation, "Confirm Password", style:"font-weight:600;" %>
-        <%= f.password_field :password_confirmation, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Date of Birth -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :dob, "Date of Birth", style:"font-weight:600;" %>
-        <%= f.date_field :dob, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Address -->
-      <div style="margin-bottom:1rem;">
-        <%= f.label :address, "Address", style:"font-weight:600;" %>
-        <%= f.text_field :address, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
-
-      <!-- Expertise -->
-      <div style="margin-bottom:1.5rem;">
-        <%= f.label :course_ids, "Expertise", style:"font-weight:600;" %>
-        <%= f.collection_select :course_ids, Course.all, :id, :name, {},
-              { class:"form-select form-select-lg",
-                multiple:true,
-                style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" } %>
-        <small style="display:block; margin-top:0.25rem; color:gray;">
-          Hold Ctrl (Windows) or ⌘ (Mac) to select multiple.
-        </small>
-      </div>
-
-      <!-- Actions -->
-      <div style="text-align:center;">
-        <%= f.submit "Add",
-            class:"btn btn-primary",
-            style:"background-color:#6f42c1; border-color:#6f42c1;
-                   color:white; padding:0.6rem 2rem; border-radius:50rem;
-                   font-weight:600; border:none;" %>
-
-        <%= link_to "Cancel", admin_dashboard_index_path,
-            style:"margin-left:0.5rem; padding:0.6rem 2rem; border-radius:50rem;
-                   border:1px solid #6f42c1; color:#6f42c1;
-                   text-decoration:none; font-weight:600;" %>
-      </div>
-    <% end %>
+    </div>
   </div>
-</div>
+</section>

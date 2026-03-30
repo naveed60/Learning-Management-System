@@ -1,60 +1,61 @@
-<div class="container py-5">
-  <div class="card shadow border-0 mx-auto" style="max-width:600px;">
-    <div class="card-header text-white py-3" style="background-color:#6f42c1; border-top-left-radius:0.5rem; border-top-right-radius:0.5rem;">
-      <h4 class="mb-0">
-        <i class="bi bi-person-plus-fill me-2"></i> Add Enrollment
-      </h4>
-    </div>
+<section class="course-admin course-admin--form">
+  <div class="course-admin__shell course-admin__shell--form">
+    <header class="course-admin__header course-admin__header--form">
+      <div>
+        <p class="course-admin__eyebrow">
+          <%= enrollment.persisted? ? "Update Enrollment" : "Create Enrollment" %>
+        </p>
+        <h1 class="course-admin__title">
+          <%= enrollment.persisted? ? "Edit Enrollment" : "Add Enrollment" %>
+        </h1>
+        <p class="course-admin__subtitle">
+          Assign students to the correct section and grade so results and semester records stay in sync.
+        </p>
+      </div>
+      <%= link_to "Back to Enrollments", admin_enrollments_path, class: "course-admin__ghost-link" %>
+    </header>
 
-    <div class="card-body" style="background-color:#f8f9fa;">
-      <%= form_for [:admin, enrollment] do |f| %>
+    <div class="course-admin__form-shell">
+      <%= form_for [:admin, enrollment], html: { class: "course-admin__form" } do |f| %>
         <%= render "shared/error", model: enrollment %>
 
-        <div class="mb-4">
-          <%= f.label :student_id, "Student", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= f.label :student_id, "Student", class: "course-admin__label" %>
           <%= f.select :student_id,
               options_from_collection_for_select(Student.all, :id, :name, f.object.student_id),
               { prompt: "Select a student" },
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;",
-              class: "form-select" %>
+              class: "course-admin__input" %>
         </div>
 
-        <div class="mb-4">
-          <%= label_tag :teacher_id, "Teacher(s)", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= label_tag :teacher_id, "Teacher(s)", class: "course-admin__label" %>
           <%= select_tag :teacher_id,
-              options_from_collection_for_select(Teacher.all, :id, :name),
+              options_from_collection_for_select(Teacher.all, :id, :name, enrollment&.section&.teacher_id),
               multiple: true,
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;",
-              class: "form-select" %>
+              class: "course-admin__input" %>
         </div>
 
-        <div class="mb-4">
-          <%= f.label :section_id, "Course & Section", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= f.label :section_id, "Course & Section", class: "course-admin__label" %>
           <%= f.select :section_id,
               options_for_select(Section.all.map { |item| ["#{item.course.name} - #{item.name}", item.id] }, f.object.section_id),
               { prompt: "Select course & section" },
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;",
-              class: "form-select" %>
+              class: "course-admin__input" %>
         </div>
 
-        <div class="mb-4">
-          <%= f.label :grade_id, "Grade", class: "form-label fw-semibold" %>
-          <%= f.collection_select :grade_id, Grade.all, :id, :letter,
+        <div class="course-admin__field">
+          <%= f.label :grade_id, "Grade", class: "course-admin__label" %>
+          <%= f.collection_select :grade_id,
+              Grade.all, :id, :letter,
               { selected: enrollment.grade_id, prompt: "Select grade" },
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;",
-              class: "form-select" %>
+              class: "course-admin__input" %>
         </div>
 
-        <div class="d-flex justify-content-end gap-2">
-          <%= link_to "Cancel", admin_dashboard_index_path,
-              style: "border-radius:50rem; padding:0.5rem 1.5rem; color:#fff; border:1px solid #fff; background:none;",
-              class: "btn btn-outline-light" %>
-
-          <%= f.submit "Add Enrollment",
-              style: "border-radius:50rem; padding:0.5rem 1.5rem; background-color:#6f42c1; border-color:#6f42c1; color:#fff;",
-              class: "btn btn-primary" %>
+        <div class="course-admin__form-actions">
+          <%= link_to "Cancel", admin_enrollments_path, class: "course-admin__secondary-button" %>
+          <%= f.submit(enrollment.persisted? ? "Save Changes" : "Create Enrollment", class: "course-admin__primary-button") %>
         </div>
       <% end %>
     </div>
   </div>
-</div>
+</section>
