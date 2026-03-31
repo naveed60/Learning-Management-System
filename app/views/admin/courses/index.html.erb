@@ -47,9 +47,10 @@
                       <%= link_to "Edit",
                           edit_admin_course_path(c),
                           class: "course-admin__action-button course-admin__action-button--edit" %>
-                      <%= link_to "Delete",
+                      <%= button_to "Delete",
                           admin_course_path(c),
-                          data: { turbo_method: :delete, turbo_confirm: "Delete this course?" },
+                          method: :delete,
+                          form: { class: "course-admin__inline-form", data: { turbo_confirm: "Delete this course?" } },
                           class: "course-admin__action-button course-admin__action-button--delete" %>
                     </div>
                   </td>

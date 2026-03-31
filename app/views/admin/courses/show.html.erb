@@ -4,10 +4,7 @@
 <p><%= @course.coursecode %></h1>
 <ul>
   <li><%= link_to "Edit", edit_admin_course_path(@course) %></li>
-  <li><%= link_to "Destroy", admin_course_path(@course), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %></li>
+  <li><%= button_to "Destroy", admin_course_path(@course), method: :delete, form: { data: { turbo_confirm: "Are you sure?" } } %></li>
   <li>
     <%= link_to "Back", admin_courses_path %>
   </li>

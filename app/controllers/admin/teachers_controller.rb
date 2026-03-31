@@ -13,9 +13,7 @@ class Admin::TeachersController < Admin::MainController
     end
     def create
         @teacher=Teacher.new(teacher_params)
-        
-        # adding data into the expertise join table
-        @teacher.course_ids=params[:course_ids]
+        @teacher.course_ids = selected_course_ids
         
         if @teacher.save    
             flash[:notice] = "Teacher was successfully Created."
@@ -30,8 +28,11 @@ class Admin::TeachersController < Admin::MainController
     end
 
     def update
-        @teacher=Teacher.find(params[:id])  
-        if @teacher.update(teacher_params)
+        @teacher=Teacher.find(params[:id])
+        @teacher.assign_attributes(teacher_params)
+        @teacher.course_ids = selected_course_ids
+
+        if @teacher.save
             flash[:notice] = "Teacher was successfully Updated."
             redirect_to admin_teacher_path(@teacher)
         else
@@ -50,5 +51,9 @@ class Admin::TeachersController < Admin::MainController
 
     def teacher_params
         params.require(:teacher).permit(:name,:father_name,:address,:phone_number,:email,:password,:dob)
+    end
+
+    def selected_course_ids
+        Array(params[:course_ids] || params.dig(:teacher, :course_ids)).reject(&:blank?)
     end
 end

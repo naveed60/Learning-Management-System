@@ -64,8 +64,25 @@
 
         <div class="course-admin__field">
           <%= f.label :course_ids, "Expertise", class: "course-admin__label" %>
-          <%= f.collection_select :course_ids, Course.all, :id, :name, {}, { multiple: true, class: "course-admin__input" } %>
-          <span class="course-admin__meta">Hold Ctrl (Windows) or Command (Mac) to select multiple courses.</span>
+          <% selected_course_ids = teacher.course_ids.map(&:to_s) %>
+          <%= hidden_field_tag "course_ids[]", "" %>
+          <details class="course-admin__multi-select">
+            <summary class="course-admin__multi-select-trigger">
+              <span>
+                <%= selected_course_ids.any? ? "#{selected_course_ids.size} course(s) selected" : "Select expertise courses" %>
+              </span>
+              <span class="course-admin__multi-select-chevron" aria-hidden="true"></span>
+            </summary>
+            <div class="course-admin__multi-select-menu">
+              <% Course.order(:name).each do |course| %>
+                <label class="course-admin__multi-option">
+                  <%= check_box_tag "course_ids[]", course.id, selected_course_ids.include?(course.id.to_s), class: "course-admin__multi-checkbox" %>
+                  <span><%= course.name %></span>
+                </label>
+              <% end %>
+            </div>
+          </details>
+          <span class="course-admin__meta">Open the dropdown and select one or more courses.</span>
         </div>
 
         <div class="course-admin__form-actions">
