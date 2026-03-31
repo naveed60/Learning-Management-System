@@ -1,33 +1,4 @@
-<%=turbo_frame_tag 'main' do%>
-<center>
-<h1>Edit Enrollment</h1>
-<%= form_for [:admin, @enrollment] do |f| %>
-
-
-  <div class="field">
-    <%= label_tag :students %><br />
-    <%= f.select :student_id, options_from_collection_for_select(Student.all, :id, :name,selected: @enrollment.student_id) %>
-  </div>
-
-  <div class="field">
-    <%= label_tag :teachername %><br />
-    <%=select_tag :teacher_id,options_from_collection_for_select(Teacher.all,:id,:name,selected: @enrollment.section.teacher_id)%>
-  </div>
-
-  <div class="field">
-      <%= f.label :course %><br />
-      <%= f.select :section_id, options_for_select(Section.all.map {|item| ["#{item.course.name} - #{item.name}", item.id]}, selected: @enrollment.section_id)%>
-  </div>
-
-  <div class="field">
-    <%= f.label :grade %><br />
-    <%= f.collection_select :grade_id, Grade.all, :id, :letter, {selected: @enrollment.grade.id }%>
-    </div>
-
-  <div class="actions">
-    <%= f.submit "Add Enrollment" %>
-  </div>
-  <%= link_to "Cancel",admin_enrollments_path,class: "btn btn-outline-info" %>
+<%= turbo_frame_tag "main" do %>
+  <%= stylesheet_link_tag "course", "data-turbo-track": "reload" %>
+  <%= render "form", enrollment: @enrollment %>
 <% end %>
-</center>
-<%end%>

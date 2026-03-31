@@ -1,118 +1,92 @@
-<div style="max-width:650px; margin:3rem auto; border-radius:10px; 
-            box-shadow:0 4px 10px rgba(0,0,0,0.1); overflow:hidden;">
-
-  <!-- Card Header -->
-  <div style="background-color:#6f42c1; color:white; padding:1rem 1.5rem;">
-    <h3 style="margin:0; font-size:1.5rem; font-weight:bold; display:flex; align-items:center;">
-      <i class="bi bi-person-plus-fill" style="margin-right:0.5rem;"></i> Add Student
-    </h3>
-  </div>
-
-  <!-- Card Body -->
-  <div style="background:#f8f9fa; padding:2rem;">
-    <%= form_for [:admin, student], html: { data: { turbo: true } } do |f| %>
-      <%= render "shared/error", model: student %>
-
-      <%# Name %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :name, class: "form-label", style:"font-weight:600;" %>
-        <%= f.text_field :name, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
+<section class="course-admin course-admin--form">
+  <div class="course-admin__shell course-admin__shell--form">
+    <header class="course-admin__header course-admin__header--form">
+      <div>
+        <p class="course-admin__eyebrow">
+          <%= student.persisted? ? "Update Student" : "Create Student" %>
+        </p>
+        <h1 class="course-admin__title">
+          <%= student.persisted? ? "Edit Student" : "Add Student" %>
+        </h1>
+        <p class="course-admin__subtitle">
+          Capture profile, batch, and semester details in one place for accurate enrollment tracking.
+        </p>
       </div>
+      <%= link_to "Back to Students", admin_students_path, class: "course-admin__ghost-link" %>
+    </header>
 
-      <%# Father Name %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :father_name, "Father Name", class:"form-label", style:"font-weight:600;" %>
-        <%= f.text_field :father_name, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+    <div class="course-admin__form-shell">
+      <%= form_for [:admin, student], html: { class: "course-admin__form", data: { turbo: true } } do |f| %>
+        <%= render "shared/error", model: student %>
 
-      <%# Email %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :email, class:"form-label", style:"font-weight:600;" %>
-        <%= f.email_field :email, class:"form-control form-control-lg", autocomplete:"email",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :name, "Name", class: "course-admin__label" %>
+          <%= f.text_field :name, placeholder: "Enter full name", class: "course-admin__input" %>
+        </div>
 
-      <%# Phone Number %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :phone_number, "Phone Number", class:"form-label", style:"font-weight:600;" %>
-        <%= f.telephone_field :phone_number, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :father_name, "Father Name", class: "course-admin__label" %>
+          <%= f.text_field :father_name, placeholder: "Enter father name", class: "course-admin__input" %>
+        </div>
 
-      <%# Password %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :password, class:"form-label", style:"font-weight:600;" %>
-        <% if @minimum_password_length %>
-          <small style="color:gray;">(<%= @minimum_password_length %> characters minimum)</small>
-        <% end %>
-        <%= f.password_field :password, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :email, "Email", class: "course-admin__label" %>
+          <%= f.email_field :email, autocomplete: "email", placeholder: "name@example.com", class: "course-admin__input" %>
+        </div>
 
-      <%# Confirm Password %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :password_confirmation, "Confirm Password", class:"form-label", style:"font-weight:600;" %>
-        <%= f.password_field :password_confirmation, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :phone_number, "Phone Number", class: "course-admin__label" %>
+          <%= f.telephone_field :phone_number, placeholder: "03XXXXXXXXX", class: "course-admin__input" %>
+        </div>
 
-      <%# DOB %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :dob, "Date of Birth", class:"form-label", style:"font-weight:600;" %>
-        <%= f.date_field :dob, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :password, "Password", class: "course-admin__label" %>
+          <%= f.password_field :password, autocomplete: "new-password", class: "course-admin__input" %>
+          <% if @minimum_password_length %>
+            <span class="course-admin__meta"><%= @minimum_password_length %> characters minimum</span>
+          <% end %>
+        </div>
 
-      <%# Image %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :image, class:"form-label", style:"font-weight:600;" %>
-        <%= f.file_field :image, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :password_confirmation, "Confirm Password", class: "course-admin__label" %>
+          <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "course-admin__input" %>
+        </div>
 
-      <%# Batch %>
-      <div style="margin-bottom:1rem;">
-        <%= f.label :batch_id, "Batch Number", class:"form-label", style:"font-weight:600;" %>
-        <%= f.select :batch_id, Batch.all.collect { |x| [x.batch_number, x.id] },
-              { include_blank:"Select" },
-              { class:"form-select form-select-lg",
-                style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" } %>
-      </div>
+        <div class="course-admin__field">
+          <%= f.label :dob, "Date of Birth", class: "course-admin__label" %>
+          <%= f.date_field :dob, class: "course-admin__input" %>
+        </div>
 
-      <%# Semester %>
-      <div style="margin-bottom:1rem;">
-        <%= label_tag :semester, "Semester",
-            style:"font-weight:600; display:block; margin-bottom:0.5rem;" %>
-        <%= select_tag "semester_id",
+        <div class="course-admin__field">
+          <%= f.label :image, "Image", class: "course-admin__label" %>
+          <%= f.file_field :image, class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= f.label :batch_id, "Batch Number", class: "course-admin__label" %>
+          <%= f.select :batch_id,
+              Batch.all.collect { |item| [item.batch_number, item.id] },
+              { include_blank: "Select batch" },
+              class: "course-admin__input" %>
+        </div>
+
+        <div class="course-admin__field">
+          <%= label_tag :semester_id, "Semester", class: "course-admin__label" %>
+          <%= select_tag "semester_id",
               options_for_select(Semester.all.map { |item| ["#{item.semester_number} - #{item.semester_type}", item.id] }),
-              class:"form-select form-select-lg",
-              style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+              class: "course-admin__input" %>
+        </div>
 
-      <%# Semester Year %>
-      <div style="margin-bottom:1.5rem;">
-        <%= label_tag :semester_year, "Semester Year",
-            style:"font-weight:600; display:block; margin-bottom:0.5rem;" %>
-        <%= text_field_tag "semester_year", nil, class:"form-control form-control-lg",
-            style:"border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
-      </div>
+        <div class="course-admin__field">
+          <%= label_tag :semester_year, "Semester Year", class: "course-admin__label" %>
+          <%= text_field_tag "semester_year", nil, class: "course-admin__input", placeholder: "e.g. 2026" %>
+        </div>
 
-      <%# Actions %>
-      <div style="text-align:center;">
-        <%= f.submit "Add",
-            class:"btn btn-primary",
-            style:"background-color:#6f42c1; border-color:#6f42c1;
-                   color:white; padding:0.6rem 2rem; border-radius:50rem;
-                   font-weight:600; border:none;" %>
-
-        <%= link_to "Cancel", admin_dashboard_index_path,
-            style:"margin-left:0.5rem; padding:0.6rem 2rem; border-radius:50rem;
-                   border:1px solid #6f42c1; color:#6f42c1;
-                   text-decoration:none; font-weight:600;" %>
-      </div>
-
-    <% end %>
+        <div class="course-admin__form-actions">
+          <%= link_to "Cancel", admin_students_path, class: "course-admin__secondary-button" %>
+          <%= f.submit(student.persisted? ? "Save Changes" : "Create Student", class: "course-admin__primary-button") %>
+        </div>
+      <% end %>
+    </div>
   </div>
-</div>
+</section>

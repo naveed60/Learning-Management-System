@@ -1,69 +1,58 @@
-<div class="container py-5">
-  <div class="card shadow border-0 mx-auto" style="max-width:600px;">
-    <!-- Card Header -->
-    <div class="card-header text-white py-3" style="background-color:#6f42c1; border-top-left-radius:0.5rem; border-top-right-radius:0.5rem;">
-      <h4 class="mb-0">
-        <i class="bi bi-diagram-3 me-2"></i> Add New Section
-      </h4>
-    </div>
+<section class="course-admin course-admin--form">
+  <div class="course-admin__shell course-admin__shell--form">
+    <header class="course-admin__header course-admin__header--form">
+      <div>
+        <p class="course-admin__eyebrow">
+          <%= section.persisted? ? "Update Section" : "Create Section" %>
+        </p>
+        <h1 class="course-admin__title">
+          <%= section.persisted? ? "Edit Section" : "Add Section" %>
+        </h1>
+        <p class="course-admin__subtitle">
+          Link each section with the right course, teacher, and semester for cleaner scheduling.
+        </p>
+      </div>
+      <%= link_to "Back to Sections", admin_sections_path, class: "course-admin__ghost-link" %>
+    </header>
 
-    <!-- Card Body -->
-    <div class="card-body" style="background-color:#f8f9fa;">
-      <%= form_for [:admin, section] do |f| %>
+    <div class="course-admin__form-shell">
+      <%= form_for [:admin, section], html: { class: "course-admin__form" } do |f| %>
         <%= render "shared/error", model: section %>
 
-        <!-- Course -->
-        <div class="mb-4">
-          <%= f.label :course_id, "Course", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= f.label :course_id, "Course", class: "course-admin__label" %>
           <%= f.select :course_id,
               options_from_collection_for_select(Course.all, :id, :name, f.object.course_id),
               { prompt: "Select a course" },
-              class: "form-select",
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
+              class: "course-admin__input" %>
         </div>
 
-        <!-- Teacher -->
-        <div class="mb-4">
-          <%= f.label :teacher_id, "Teacher", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= f.label :teacher_id, "Teacher", class: "course-admin__label" %>
           <%= f.select :teacher_id,
               options_from_collection_for_select(Teacher.all, :id, :name, f.object.teacher_id),
               { prompt: "Select a teacher" },
-              class: "form-select",
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
+              class: "course-admin__input" %>
         </div>
 
-        <!-- Semester -->
-        <div class="mb-4">
-          <%= f.label :semester_id, "Semester", class: "form-label fw-semibold" %>
+        <div class="course-admin__field">
+          <%= f.label :semester_id, "Semester", class: "course-admin__label" %>
           <%= f.select :semester_id,
               options_for_select(Semester.all.map { |item| ["#{item.semester_number} - #{item.semester_type}", item.id] }, f.object.semester_id),
               { prompt: "Select semester" },
-              class: "form-select",
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
+              class: "course-admin__input" %>
         </div>
 
-        <!-- Section Name -->
-        <div class="mb-4">
-          <%= f.label :name, "Section Name", class: "form-label fw-semibold" %>
-          <%= f.text_field :name,
-              placeholder: "Enter section name",
-              autofocus: true,
-              class: "form-control form-control-lg",
-              style: "border-radius:50rem; padding:0.75rem 1rem; font-size:1rem;" %>
+        <div class="course-admin__field">
+          <%= f.label :name, "Section Name", class: "course-admin__label" %>
+          <%= f.text_field :name, placeholder: "Enter section name", autofocus: true, class: "course-admin__input" %>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="d-flex justify-content-end gap-2">
-          <%= link_to "Cancel",
-              admin_dashboard_index_path,
-              class: "btn btn-outline-light",
-              style: "border-radius:50rem; padding:0.5rem 1.5rem; color:#fff; border:1px solid #fff; background:none;" %>
-
-          <%= f.submit "Add Section",
-              class: "btn btn-primary",
-              style: "border-radius:50rem; padding:0.5rem 1.5rem; background-color:#6f42c1; border-color:#6f42c1; color:#fff;" %>
+        <div class="course-admin__form-actions">
+          <%= link_to "Cancel", admin_sections_path, class: "course-admin__secondary-button" %>
+          <%= f.submit(section.persisted? ? "Save Changes" : "Create Section", class: "course-admin__primary-button") %>
         </div>
       <% end %>
     </div>
   </div>
-</div>
+</section>
