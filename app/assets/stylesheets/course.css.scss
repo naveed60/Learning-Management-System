@@ -124,6 +124,7 @@
 .course-admin__secondary-button:focus-visible,
 .course-admin__ghost-link:focus-visible,
 .course-admin__input:focus-visible,
+.course-admin__multi-select-trigger:focus-visible,
 .course-admin__action-button:focus-visible {
   outline: 2px solid #0ea5e9;
   outline-offset: 2px;
@@ -234,6 +235,11 @@
   gap: 0.45rem;
 }
 
+.course-admin__inline-form {
+  display: inline;
+  margin: 0;
+}
+
 .course-admin__action-button {
   display: inline-flex;
   align-items: center;
@@ -246,6 +252,11 @@
   font-size: 0.85rem;
   font-weight: 700;
   transition: transform 0.18s ease, box-shadow 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+button.course-admin__action-button {
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .course-admin__action-button:hover {
@@ -416,6 +427,105 @@
 .course-admin__form-shell #error_explanation li {
   font-size: 0.85rem;
   line-height: 1.42;
+}
+
+.course-admin__multi-select {
+  position: relative;
+}
+
+.course-admin__multi-select > .course-admin__multi-select-trigger {
+  list-style: none;
+}
+
+.course-admin__multi-select > .course-admin__multi-select-trigger::-webkit-details-marker {
+  display: none;
+}
+
+.course-admin__multi-select > .course-admin__multi-select-trigger::marker {
+  content: "";
+}
+
+.course-admin__multi-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  width: 100%;
+  min-height: 2.9rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.8rem;
+  border: 1px solid #cdddf4;
+  background: #fbfdff;
+  color: #163259;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.course-admin__multi-select:hover .course-admin__multi-select-trigger {
+  border-color: #b7cbeb;
+}
+
+.course-admin__multi-select[open] .course-admin__multi-select-trigger {
+  border-color: #5da7f5;
+  box-shadow: 0 0 0 4px rgba(93, 167, 245, 0.18);
+  background-color: #ffffff;
+}
+
+.course-admin__multi-select-chevron {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid #5d76a0;
+  border-bottom: 2px solid #5d76a0;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  margin-bottom: 0.15rem;
+}
+
+.course-admin__multi-select[open] .course-admin__multi-select-chevron {
+  transform: rotate(-135deg);
+  margin-bottom: -0.1rem;
+}
+
+.course-admin__multi-select-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  border: 1px solid #d6e2f4;
+  border-radius: 0.8rem;
+  background: #ffffff;
+  box-shadow: 0 14px 30px rgba(15, 41, 78, 0.18);
+  max-height: 14rem;
+  overflow-y: auto;
+  padding: 0.35rem;
+}
+
+.course-admin__multi-select[open] .course-admin__multi-select-menu {
+  display: block;
+}
+
+.course-admin__multi-option {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 0.55rem;
+  color: #173765;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.course-admin__multi-option:hover {
+  background-color: #f1f6ff;
+}
+
+.course-admin__multi-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #0f766e;
 }
 
 @keyframes course-rise {
