@@ -1,84 +1,139 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-10">
+<% teacher_initials = current_teacher.name.to_s.split.map { |part| part[0] }.join.first(2).to_s.upcase.presence || "T" %>
+<% teacher_courses = current_teacher.courses %>
 
-      <!-- Profile Card -->
-      <div class="card shadow border-0">
-        <div class="card-header text-white py-4 "style="background-color: rgb(132 76 209) !important;">
-          <div class="d-flex align-items-center">
-            <!-- Avatar -->
-            <div class="rounded-circle bg-light border border-3 border-white d-flex align-items-center justify-content-center me-3"
-                 style="width:80px;height:80px;font-size:1.4rem;">
-              <span class="fw-bold text-primary">
-                <%= (current_teacher.name.to_s.split.map { |w| w[0] }.join.first(2).upcase.presence || "T") %>
-              </span>
+<section class="teacher-profile-v2">
+  <div class="teacher-profile-v2__shell">
+    <div class="teacher-profile-v2__hero">
+      <div class="teacher-profile-v2__hero-grid">
+        <div class="teacher-profile-v2__identity">
+          <div class="teacher-profile-v2__avatar"><%= teacher_initials %></div>
+
+          <div>
+            <div class="teacher-profile-v2__eyebrow">
+              <i class="bi bi-stars"></i>
+              Teacher Profile
             </div>
-            <div>
-              <h2 class="h4 mb-1 fw-semibold"><%= current_teacher.name %></h2>
-              <span class="badge bg-light text-dark">Teacher ID: <%= current_teacher.id %></span>
-            </div>
-          </div>
-        </div>
+            <h1 class="teacher-profile-v2__name"><%= current_teacher.name %></h1>
+            <p class="teacher-profile-v2__email"><%= current_teacher.email %></p>
 
-        <!-- Info Sections -->
-        <div class="card-body">
-          <div class="row g-4">
-            <!-- Personal Information -->
-            <div class="col-md-6">
-              <h5 class="border-bottom pb-2 mb-3 text-primary">Personal Information</h5>
-              <dl class="row mb-0">
-                <dt class="col-sm-5 text-muted">Father Name</dt>
-                <dd class="col-sm-7"><%= current_teacher.father_name.presence || "-" %></dd>
-
-                <dt class="col-sm-5 text-muted">Email</dt>
-                <dd class="col-sm-7">
-                  <a href="mailto:<%= current_teacher.email %>" class="text-decoration-none">
-                    <i class="bi bi-envelope me-1"></i><%= current_teacher.email %>
-                  </a>
-                </dd>
-
-                <dt class="col-sm-5 text-muted">Phone</dt>
-                <dd class="col-sm-7">
-                  <i class="bi bi-telephone me-1"></i><%= current_teacher.phone_number.presence || "-" %>
-                </dd>
-
-                <dt class="col-sm-5 text-muted">Date of Birth</dt>
-                <dd class="col-sm-7"><%= current_teacher.dob&.strftime("%b %d, %Y") || "-" %></dd>
-
-                <dt class="col-sm-5 text-muted">Address</dt>
-                <dd class="col-sm-7"><%= current_teacher.address.presence || "-" %></dd>
-              </dl>
-            </div>
-
-            <!-- Academic Information -->
-            <div class="col-md-6">
-              <h5 class="border-bottom pb-2 mb-3 text-primary">Academic Information</h5>
-              <dl class="row mb-0">
-                <dt class="col-sm-5 text-muted">Courses</dt>
-                <dd class="col-sm-7">
-                  <% if current_teacher.courses.any? %>
-                    <div class="d-flex flex-wrap gap-2">
-                      <% current_teacher.courses.each do |t| %>
-                        <span class="badge bg-info text-dark px-3 py-2 rounded-pill shadow-sm"><%= t.name %></span>
-                      <% end %>
-                    </div>
-                  <% else %>
-                    <span class="text-muted fst-italic">No courses assigned</span>
-                  <% end %>
-                </dd>
-              </dl>
+            <div class="teacher-profile-v2__chips">
+              <div class="teacher-profile-v2__chip">
+                <i class="bi bi-person-badge"></i>
+                ID <%= current_teacher.id %>
+              </div>
+              <div class="teacher-profile-v2__chip">
+                <i class="bi bi-envelope"></i>
+                Faculty Account
+              </div>
+              <div class="teacher-profile-v2__chip">
+                <i class="bi bi-journal-bookmark"></i>
+                <%= pluralize(teacher_courses.count, "Course") %>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Footer -->
-        <div class="card-footer bg-light border-0 text-end">
-          <%= link_to teacher_root_path, class: "btn btn-outline-secondary px-4" do %>
-            <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
-          <% end %>
+        <div class="teacher-profile-v2__stats">
+          <div class="teacher-profile-v2__stat">
+            <span>Phone</span>
+            <strong><%= current_teacher.phone_number.presence || "-" %></strong>
+          </div>
+          <div class="teacher-profile-v2__stat">
+            <span>Status</span>
+            <strong>Active Teacher</strong>
+          </div>
+          <div class="teacher-profile-v2__stat">
+            <span>Courses</span>
+            <strong><%= teacher_courses.count %></strong>
+          </div>
         </div>
       </div>
+    </div>
 
+    <div class="teacher-profile-v2__body">
+      <article class="teacher-profile-v2__panel">
+        <div class="teacher-profile-v2__panel-head">
+          <div>
+            <p class="teacher-profile-v2__panel-kicker">Personal Details</p>
+            <h2 class="teacher-profile-v2__panel-title">Personal Information</h2>
+          </div>
+          <div class="teacher-profile-v2__panel-icon">
+            <i class="bi bi-person-circle"></i>
+          </div>
+        </div>
+
+        <div class="teacher-profile-v2__fields">
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Father's Name</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.father_name.presence || "-" %></span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Email Address</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.email %></span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Phone Number</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.phone_number.presence || "-" %></span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Date of Birth</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.dob&.strftime("%B %d, %Y") || "-" %></span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Address</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.address.presence || "-" %></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="teacher-profile-v2__panel">
+        <div class="teacher-profile-v2__panel-head">
+          <div>
+            <p class="teacher-profile-v2__panel-kicker">Academic Details</p>
+            <h2 class="teacher-profile-v2__panel-title">Academic Information</h2>
+          </div>
+          <div class="teacher-profile-v2__panel-icon">
+            <i class="bi bi-journal-bookmark"></i>
+          </div>
+        </div>
+
+        <div class="teacher-profile-v2__fields">
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Teacher ID</span>
+            <span class="teacher-profile-v2__field-value"><%= current_teacher.id %></span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Assigned Courses</span>
+            <span class="teacher-profile-v2__field-value">
+              <% if teacher_courses.any? %>
+                <span class="teacher-profile-v2__courses">
+                  <% teacher_courses.each do |course| %>
+                    <span class="teacher-profile-v2__course"><%= course.name %></span>
+                  <% end %>
+                </span>
+              <% else %>
+                <span class="teacher-profile-v2__empty">No courses assigned</span>
+              <% end %>
+            </span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Profile Status</span>
+            <span class="teacher-profile-v2__field-value">Active Teacher</span>
+          </div>
+          <div class="teacher-profile-v2__field">
+            <span class="teacher-profile-v2__field-label">Last Updated</span>
+            <span class="teacher-profile-v2__field-value"><%= Time.current.strftime("%b %d, %Y") %></span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="teacher-profile-v2__footer">
+      <p class="teacher-profile-v2__updated">Profile overview updated on <%= Time.current.strftime("%B %d, %Y") %></p>
+      <%= link_to teacher_root_path, class: "teacher-profile-v2__button" do %>
+        <i class="bi bi-arrow-left"></i>
+        Back to Dashboard
+      <% end %>
     </div>
   </div>
-</div>
+</section>

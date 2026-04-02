@@ -1,82 +1,129 @@
-<div class="container mt-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10">
-      <div class="card shadow-sm">
-        <!-- Profile Header -->
-        <div class="card-header text-white py-4 "style="background-color: rgb(132 76 209) !important;">
-          <div class="d-flex align-items-center">
-            <% if @student.image.attached? %>
-              <%= image_tag @student.image, class: "rounded-circle border border-3 border-white me-4", width: "120", height: "120" %>
-            <% else %>
-              <div class="rounded-circle bg-white text-primary d-flex align-items-center justify-content-center me-4" style="width: 120px; height: 120px;">
-                <i class="bi bi-person-fill" style="font-size: 3rem;"></i>
-              </div>
-            <% end %>
-            <div>
-              <h1 class="mb-1"><%= current_student.name %></h1>
-              <p class="mb-0 opacity-75">Student ID: <%= current_student.id %></p>
-              <p class="mb-0 opacity-75"><%= current_student.email %></p>
+<% current_semester = current_student.semesters.last %>
+<% student_initials = current_student.name.to_s.split.map { |part| part[0] }.join.first(2).to_s.upcase.presence || "S" %>
+
+<section class="student-profile-v2">
+  <div class="student-profile-v2__shell">
+    <div class="student-profile-v2__hero">
+      <div class="student-profile-v2__hero-grid">
+        <div class="student-profile-v2__identity">
+          <% if @student.image.attached? %>
+            <%= image_tag @student.image, class: "student-profile-v2__avatar-image", alt: "#{current_student.name} profile photo" %>
+          <% else %>
+            <div class="student-profile-v2__avatar"><%= student_initials %></div>
+          <% end %>
+
+          <div>
+            <div class="student-profile-v2__eyebrow">
+              <i class="bi bi-stars"></i>
+              Student Profile
             </div>
-          </div>
-        </div>
-        
-        <!-- Profile Body -->
-        <div class="card-body p-4">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title text-primary">Personal Information</h5>
-                  <hr>
-                  <div class="mb-3">
-                    <label class="text-muted small">Father's Name</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.father_name %></p>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-muted small">Phone Number</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.phone_number %></p>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-muted small">Date of Birth</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.dob.strftime("%B %d, %Y") if current_student.dob %></p>
-                  </div>
-                </div>
+            <h1 class="student-profile-v2__name"><%= current_student.name %></h1>
+            <p class="student-profile-v2__email"><%= current_student.email %></p>
+
+            <div class="student-profile-v2__chips">
+              <div class="student-profile-v2__chip">
+                <i class="bi bi-person-badge"></i>
+                ID <%= current_student.id %>
               </div>
-            </div>
-            
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title text-primary">Academic Information</h5>
-                  <hr>
-                  <div class="mb-3">
-                    <label class="text-muted small">Batch Number</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.batch_id %></p>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-muted small">Current Semester Type</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.semesters.last.semester_type %></p>
-                  </div>
-                  <div class="mb-3">
-                    <label class="text-muted small">Current Semester</label>
-                    <p class="mb-0 fw-semibold"><%= current_student.semesters.last.semester_number %></p>
-                  </div>
-                </div>
+              <div class="student-profile-v2__chip">
+                <i class="bi bi-mortarboard"></i>
+                Semester <%= current_semester&.semester_number || "-" %>
+              </div>
+              <div class="student-profile-v2__chip">
+                <i class="bi bi-layers"></i>
+                <%= current_semester&.semester_type || "Not assigned" %>
               </div>
             </div>
           </div>
         </div>
-        
-        <!-- Profile Footer -->
-        <div class="card-footer bg-light py-3">
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="text-muted small">Last updated: <%= Time.now.strftime("%b %d, %Y") %></span>
-            <%= link_to "Back to Dashboard", student_root_path,
-                class: 'btn btn-sm px-3 rounded-pill',
-                style: "background-color:#6f42c1; color:white; border:none; font-weight:500; padding:10px;" %>
+
+        <div class="student-profile-v2__stats">
+          <div class="student-profile-v2__stat">
+            <span>Batch</span>
+            <strong><%= current_student.batch_id || "-" %></strong>
+          </div>
+          <div class="student-profile-v2__stat">
+            <span>Phone</span>
+            <strong><%= current_student.phone_number.presence || "-" %></strong>
+          </div>
+          <div class="student-profile-v2__stat">
+            <span>Status</span>
+            <strong>Active Student</strong>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="student-profile-v2__body">
+      <article class="student-profile-v2__panel">
+        <div class="student-profile-v2__panel-head">
+          <div>
+            <p class="student-profile-v2__panel-kicker">Personal Details</p>
+            <h2 class="student-profile-v2__panel-title">Personal Information</h2>
+          </div>
+          <div class="student-profile-v2__panel-icon">
+            <i class="bi bi-person-circle"></i>
+          </div>
+        </div>
+
+        <div class="student-profile-v2__fields">
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Father's Name</span>
+            <span class="student-profile-v2__field-value"><%= current_student.father_name.presence || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Phone Number</span>
+            <span class="student-profile-v2__field-value"><%= current_student.phone_number.presence || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Date of Birth</span>
+            <span class="student-profile-v2__field-value"><%= current_student.dob&.strftime("%B %d, %Y") || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Email Address</span>
+            <span class="student-profile-v2__field-value"><%= current_student.email %></span>
+          </div>
+        </div>
+      </article>
+
+      <article class="student-profile-v2__panel">
+        <div class="student-profile-v2__panel-head">
+          <div>
+            <p class="student-profile-v2__panel-kicker">Academic Details</p>
+            <h2 class="student-profile-v2__panel-title">Academic Information</h2>
+          </div>
+          <div class="student-profile-v2__panel-icon">
+            <i class="bi bi-journal-bookmark"></i>
+          </div>
+        </div>
+
+        <div class="student-profile-v2__fields">
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Batch Number</span>
+            <span class="student-profile-v2__field-value"><%= current_student.batch_id || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Current Semester Type</span>
+            <span class="student-profile-v2__field-value"><%= current_semester&.semester_type || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Current Semester</span>
+            <span class="student-profile-v2__field-value"><%= current_semester&.semester_number || "-" %></span>
+          </div>
+          <div class="student-profile-v2__field">
+            <span class="student-profile-v2__field-label">Last Updated</span>
+            <span class="student-profile-v2__field-value"><%= Time.current.strftime("%b %d, %Y") %></span>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="student-profile-v2__footer">
+      <p class="student-profile-v2__updated">Profile overview updated on <%= Time.current.strftime("%B %d, %Y") %></p>
+      <%= link_to student_root_path, class: "student-profile-v2__button" do %>
+        <i class="bi bi-arrow-left"></i>
+        Back to Dashboard
+      <% end %>
+    </div>
   </div>
-</div>
+</section>
