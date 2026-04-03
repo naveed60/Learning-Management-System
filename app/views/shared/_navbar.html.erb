@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg"
-     style="background: linear-gradient(90deg, #981ac1 0%, #4dd2f2 100%);
+     style="background: linear-gradient(90deg, #8e3d97 0%, #702875 100%);
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             padding: 0.75rem 1rem;
             margin: 0;
@@ -65,14 +65,14 @@
             <%= link_to 'Logout', destroy_teacher_session_path,
                 data: { turbo_method: :delete },
                 class: 'btn btn-sm px-3 rounded-pill',
-                style: "background-color:#6f42c1; color:white; border:none; font-weight:500;padding:10px;" %>
+                style: "background-color:#8e3d97; color:white; border:none; font-weight:500;padding:10px;" %>
           </li>
         <% elsif student_signed_in? %>
           <li class="nav-item">
             <%= link_to 'Logout', destroy_student_session_path,
                 data: { turbo_method: :delete },
                 class: 'btn btn-sm px-3 rounded-pill',
-                style: "background-color:#6f42c1; color:white; border:none; font-weight:500;padding:10px;" %>
+                style: "background-color:#8e3d97; color:white; border:none; font-weight:500;padding:10px;" %>
           </li>
         <% else %>
           <li class="nav-item dropdown" style="position: relative;">

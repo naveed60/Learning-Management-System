@@ -1,7 +1,7 @@
 <header class="app-header">
   <div class="app-header__content container d-flex align-items-center justify-content-between">
     <div class="app-header__brand">
-      <%= link_to "LMS Demo", root_path, class: "app-header__logo" %>
+      <%= link_to "LMS", root_path, class: "app-header__logo" %>
       <span class="app-header__tagline">Unified learning experience</span>
     </div>
     <nav class="app-header__nav">
@@ -13,21 +13,39 @@
     <div class="app-header__account">
       <% if nav_signed_in? %>
         <% current_account = nav_current_account %>
-        <% if current_account %>
-          <% edit_path = nav_edit_registration_path %>
-          <% if edit_path %>
-            <%= link_to current_account.email, edit_path, class: "app-header__email" %>
-          <% else %>
-            <span class="app-header__email"><%= current_account.email %></span>
-          <% end %>
-        <% end %>
+        <% edit_path = nav_edit_registration_path %>
         <% logout_path = nav_logout_path %>
-        <% if logout_path %>
-          <%= button_to "Logout", logout_path,
-              method: :delete,
-              class: "app-header__logout-button",
-              form: { class: "app-header__logout-form" } %>
-        <% end %>
+        <div class="app-header__profile-menu">
+          <button type="button" class="app-header__profile-trigger" aria-label="Open account menu">
+            <i class="bi bi-person-circle" aria-hidden="true"></i>
+          </button>
+
+          <div class="app-header__profile-dropdown" role="menu" aria-label="Account menu">
+            <% if current_account %>
+              <% if edit_path %>
+                <%= link_to edit_path, class: "app-header__profile-email", role: "menuitem" do %>
+                  <i class="bi bi-envelope-at" aria-hidden="true"></i>
+                  <span><%= current_account.email %></span>
+                <% end %>
+              <% else %>
+                <div class="app-header__profile-email" role="menuitem">
+                  <i class="bi bi-envelope-at" aria-hidden="true"></i>
+                  <span><%= current_account.email %></span>
+                </div>
+              <% end %>
+            <% end %>
+
+            <% if logout_path %>
+              <%= button_to logout_path,
+                  method: :delete,
+                  class: "app-header__profile-logout-button",
+                  form: { class: "app-header__profile-logout-form", role: "none" } do %>
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+                <span>Logout</span>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
       <% else %>
         <%= link_to "Register User", nav_register_path, class: "app-header__register-button" %>
         <%= link_to "Login", nav_login_path, class: "app-header__login-button" %>
