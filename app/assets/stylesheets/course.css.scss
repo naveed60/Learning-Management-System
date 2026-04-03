@@ -3,10 +3,10 @@
   --panel-border: #d8e2f4;
   --text-primary: #162337;
   --text-muted: #5b6f90;
-  --header-from: #0f5bd7;
-  --header-to: #0ea5e9;
-  --add-from: #0f766e;
-  --add-to: #10b981;
+  --header-from: #8e3d97;
+  --header-to: #702875;
+  --add-from: #8e3d97;
+  --add-to: #702875;
   --edit-accent: #075985;
   --delete-accent: #b91c1c;
 
@@ -107,7 +107,7 @@
   letter-spacing: 0.01rem;
   color: #ffffff;
   background: linear-gradient(135deg, var(--add-from), var(--add-to));
-  box-shadow: 0 10px 24px rgba(5, 150, 105, 0.3);
+  box-shadow: 0 10px 24px rgba(112, 40, 117, 0.3);
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
@@ -115,7 +115,7 @@
 .course-admin__primary-button:hover {
   color: #ffffff;
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(5, 150, 105, 0.36);
+  box-shadow: 0 14px 28px rgba(112, 40, 117, 0.38);
   filter: saturate(1.08);
 }
 
@@ -525,7 +525,7 @@ button.course-admin__action-button {
 .course-admin__multi-checkbox {
   width: 1rem;
   height: 1rem;
-  accent-color: #0f766e;
+  accent-color: #8e3d97;
 }
 
 @keyframes course-rise {

@@ -1,43 +1,86 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<section class="account-edit">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8 col-xl-7">
+        <div class="account-edit__card">
+          <div class="account-edit__header">
+            <p class="account-edit__eyebrow">Account Settings</p>
+            <h2 class="account-edit__title">Edit <%= resource_name.to_s.humanize %></h2>
+            <p class="account-edit__subtitle">Update your email and password details.</p>
+          </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+          <div class="account-edit__body">
+            <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: "account-edit__form" }) do |f| %>
+              <% if resource.errors.any? %>
+                <div class="alert alert-danger account-edit__errors" role="alert">
+                  <strong class="d-block mb-1">Please fix the following:</strong>
+                  <ul class="mb-0 ps-3">
+                    <% resource.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+              <div class="mb-3">
+                <%= f.label :email, class: "account-edit__label" %>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control account-edit__input" %>
+              </div>
+
+              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                <div class="account-edit__notice">
+                  Waiting confirmation for: <strong><%= resource.unconfirmed_email %></strong>
+                </div>
+              <% end %>
+
+              <div class="mb-3">
+                <%= f.label :password, class: "account-edit__label" %>
+                <%= f.password_field :password, autocomplete: "new-password", class: "form-control account-edit__input", placeholder: "Leave blank to keep existing password" %>
+                <% if @minimum_password_length %>
+                  <small class="account-edit__hint"><%= @minimum_password_length %> characters minimum</small>
+                <% end %>
+              </div>
+
+              <div class="mb-3">
+                <%= f.label :password_confirmation, class: "account-edit__label" %>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control account-edit__input" %>
+              </div>
+
+              <div class="mb-4">
+                <%= f.label :current_password, class: "account-edit__label" %>
+                <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control account-edit__input", placeholder: "Enter current password to save changes" %>
+              </div>
+
+              <div class="account-edit__actions">
+                <%= f.submit "Update Account", class: "account-edit__submit" %>
+              </div>
+            <% end %>
+
+            <div class="account-edit__danger-zone">
+              <h3 class="account-edit__danger-title">Danger Zone</h3>
+              <p class="account-edit__danger-copy">This will permanently delete your account.</p>
+              <%= button_to "Cancel my account",
+                  registration_path(resource_name),
+                  data: { turbo_confirm: "Are you sure?" },
+                  method: :delete,
+                  class: "account-edit__danger-button" %>
+            </div>
+
+            <div class="account-edit__footer">
+              <% dashboard_path = case nav_signed_in_scope
+                                  when :admin then admin_dashboard_index_path
+                                  when :teacher then teacher_dashboard_index_path
+                                  when :student then student_dashboard_index_path
+                                  else root_path
+                                  end %>
+              <%= link_to dashboard_path, class: "account-edit__back-link" do %>
+                <i class="bi bi-arrow-left"></i>
+                <span>Back to Dashboard</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+</section>
