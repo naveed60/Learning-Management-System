@@ -2,21 +2,6 @@
 
 import { application } from "controllers/application"
 
-// Eager load all controllers defined in the import map under controllers/**/*_controller
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
-eagerLoadControllersFrom("controllers", application)
-
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
-// Lazy load controllers as they appear in the DOM (remember not to preload controllers in import map!)
-// import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
-// lazyLoadControllersFrom("controllers", application)
-import { Application } from 'stimulus'
-import CharacterCounter from 'stimulus-character-counter'
-
-const application = Application.start()
-application.register('character-counter', CharacterCounter)
-
-import { Application } from 'stimulus'
-import TextInput from 'stimulus-text-input'
-
+// Lazy load controllers as they appear in the DOM.
+import { lazyLoadControllersFrom } from "@hotwired/stimulus-loading"
+lazyLoadControllersFrom("controllers", application)
