@@ -413,3 +413,235 @@ $font-family-base: "Inter", system-ui, sans-serif;
   color: #1f5ec4;
   text-decoration: underline;
 }
+
+.auth-switcher {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "panel welcome";
+  min-height: 600px;
+  border-radius: 2rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 28px 65px rgba(50, 25, 80, 0.18);
+}
+
+.auth-switcher.is-register {
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "welcome panel";
+}
+
+.auth-switcher__welcome {
+  grid-area: welcome;
+  background: linear-gradient(155deg, #8e3d97 0%, #7f2f85 55%, #702875 100%);
+  color: #ffffff;
+  padding: 3.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.auth-switcher__welcome-title {
+  margin-bottom: 1rem;
+  font-size: clamp(2rem, 2.8vw, 2.4rem);
+  font-weight: 700;
+}
+
+.auth-switcher__welcome-copy {
+  margin: 0;
+  max-width: 18rem;
+  line-height: 1.55;
+  font-size: 1.05rem;
+  opacity: 0.95;
+}
+
+.auth-switcher__welcome-copy--register,
+.auth-switcher__welcome-button--login {
+  display: none;
+}
+
+.auth-switcher__welcome-button {
+  margin-top: 2rem;
+  min-width: 10.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 0.8rem;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.72rem 1.4rem;
+}
+
+.auth-switcher__welcome-button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.auth-switcher__panel {
+  grid-area: panel;
+  padding: 3rem 2.5rem;
+  background: #ffffff;
+}
+
+.auth-switcher__tabs {
+  display: inline-flex;
+  gap: 0.35rem;
+  background: #f4e9f6;
+  border-radius: 999px;
+  padding: 0.28rem;
+  margin-bottom: 1.6rem;
+}
+
+.auth-switcher__tab {
+  border: none;
+  background: transparent;
+  color: #7d3d84;
+  border-radius: 999px;
+  padding: 0.45rem 1.15rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.auth-switcher__tab.active {
+  background: #8e3d97;
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(142, 61, 151, 0.3);
+}
+
+.auth-switcher__title {
+  margin: 0 0 1.5rem;
+  color: #7d3d84;
+  font-size: clamp(2rem, 3vw, 2.65rem);
+  font-weight: 700;
+}
+
+.auth-switcher__form {
+  display: none;
+}
+
+.auth-switcher:not(.is-register) .auth-switcher__form--login {
+  display: block;
+}
+
+.auth-switcher.is-register .auth-switcher__form--register {
+  display: block;
+}
+
+.auth-switcher__form-fields .form-control {
+  border-radius: 0.72rem;
+  border: 1px solid #d9d9df;
+  padding: 0.7rem 0.95rem;
+  font-size: 1rem;
+}
+
+.auth-switcher__form-fields .form-control:focus {
+  border-color: #8e3d97;
+  box-shadow: 0 0 0 0.22rem rgba(142, 61, 151, 0.2);
+}
+
+.auth-switcher__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.15rem;
+}
+
+.auth-switcher__remember {
+  margin-bottom: 0;
+  color: #6b6575;
+  font-size: 0.95rem;
+}
+
+.auth-switcher__remember .form-check-input:checked {
+  background-color: #8e3d97;
+  border-color: #8e3d97;
+}
+
+.auth-switcher__text-link {
+  color: #7d3d84;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.auth-switcher__text-link:hover {
+  color: #5e2d64;
+}
+
+.auth-switcher__submit {
+  border: none;
+  border-radius: 0.82rem;
+  background: #8e3d97;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.78rem 1rem;
+}
+
+.auth-switcher__submit:hover {
+  background: #772f7f;
+  color: #ffffff;
+}
+
+.auth-switcher__hint {
+  display: block;
+  margin-top: 0.45rem;
+  color: #7a7285;
+  font-size: 0.82rem;
+}
+
+.auth-switcher__errors {
+  border-radius: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.auth-switcher.is-register .auth-switcher__welcome-copy--login,
+.auth-switcher.is-register .auth-switcher__welcome-button--register {
+  display: none;
+}
+
+.auth-switcher.is-register .auth-switcher__welcome-copy--register,
+.auth-switcher.is-register .auth-switcher__welcome-button--login {
+  display: inline-flex;
+}
+
+@media (max-width: 991px) {
+  .auth-switcher {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "welcome"
+      "panel";
+    min-height: auto;
+  }
+
+  .auth-switcher.is-register {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "welcome"
+      "panel";
+  }
+
+  .auth-switcher__welcome {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 2.6rem 1.5rem 2.35rem;
+  }
+
+  .auth-switcher__panel {
+    padding: 2.1rem 1.3rem;
+  }
+
+  .auth-switcher__title {
+    font-size: clamp(1.7rem, 6vw, 2.2rem);
+  }
+}
