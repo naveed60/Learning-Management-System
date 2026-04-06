@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+seed_cached_dependencies() {
+  local src="$1"
+  local dest="$2"
+  local label="$3"
+
+  mkdir -p "$dest"
+  if [ -z "$(ls -A "$dest" 2>/dev/null)" ] && [ -d "$src" ] && [ -n "$(ls -A "$src" 2>/dev/null)" ]; then
+    echo "Seeding ${label} from image cache..."
+    cp -a "$src"/. "$dest"/
+  fi
+}
+
+seed_cached_dependencies /opt/bundle-cache /usr/local/bundle gems
+seed_cached_dependencies /opt/node_modules-cache /rails/node_modules node_modules
+
+if ! bundle check >/dev/null 2>&1; then
+  echo "Missing gems in container volume. Rebuild image with: docker compose build web"
+  exit 1
+fi
+
+rm -f tmp/pids/server.pid
+
+if [ "${SKIP_DB_PREPARE:-0}" != "1" ]; then
+  db_wait_attempts="${DB_WAIT_ATTEMPTS:-30}"
+  db_wait_interval="${DB_WAIT_INTERVAL:-2}"
+  attempt=1
+
+  until bundle exec rails db:prepare; do
+    echo "rails db:prepare failed (${attempt}/${db_wait_attempts}). Retrying..."
+    if [ "${attempt}" -ge "${db_wait_attempts}" ]; then
+      echo "Failed to prepare database after ${db_wait_attempts} attempts."
+      if [ -n "${DB_HOST:-}" ]; then
+        echo "Debug info:"
+        getent hosts "${DB_HOST}" || true
+        pg_isready -h "${DB_HOST}" -p "${DB_PORT:-5432}" -U "${DB_USERNAME:-postgres}" || true
+      fi
+      exit 1
+    fi
+    attempt=$((attempt + 1))
+    sleep "${db_wait_interval}"
+  done
+fi
+
+exec "$@"

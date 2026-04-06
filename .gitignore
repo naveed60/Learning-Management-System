@@ -1,5 +1,6 @@
 # Dependency directories
 node_modules/
+vendor/bundle/
 
 # Logs
 log/*
@@ -13,3 +14,6 @@ tmp/*
 public/assets/*
 !public/assets/.keep
 
+# Local env overrides
+.env
+config/.env
